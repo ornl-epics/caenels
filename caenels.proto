@@ -1,0 +1,128 @@
+
+OutTerminator = CR LF;
+InTerminator = CR;
+ExtraInput = ignore;
+
+
+
+################################################################################
+#CAENels Easy driver 0520
+################################################################################
+#Mariano Jan-22-2021 modified from online github driver
+
+
+
+
+###Get Requested Current SP
+getMWI {
+    out "MWI:?";
+    in "#MWI:%f";
+}
+
+####Get Mode V or I
+getLOOP{
+    out "LOOP:?";
+    in "#LOOP:%s";
+}
+
+##Get Feed Back
+getFDB {
+    out "FDB";
+    in "#FDB:%*i:%f:%*f";
+}
+
+##EEPROM field CEll 
+setMRG {
+    out "MRG:";
+    in "%f";
+}
+
+##Read Output Current
+getMRI {
+    out "MRI";
+    in "#MRI:%f";
+}
+
+##Read Module ID
+getMRID {
+    out "MRID";
+    in "#MRID:%s";
+}
+
+##Read DC link Voltage Value
+getMRP {
+    out "MRP";
+    in "#MRP:%f";
+}
+
+##Read Current Slew Rate
+getMRSR {
+    out "MRSR";
+    in "#MRSR:%f";
+}
+
+##Read Heat Sink Temperature
+getMRT {
+    out "MRT";
+    in "#MRT:%f";
+}
+
+##Read Shunt Regulator Temperature
+getMRTS {
+    out "MRTS";
+    in "#MRTS:%f";
+}
+
+##Read Output Voltage
+getMRV {
+    out "MRV";
+    in "#MRV:%f";
+}
+
+
+##Read Module Internal Status Register
+getMST {
+    out "MST";
+    in "#MST:%X";
+}
+
+##Read Module ID
+getMVER {
+    out "MVER";
+    in "#MVER:%s";
+}
+
+##Read Output Power
+getMRW {
+    out "MRW";
+    in "#MRW:%f";
+}
+
+################################################################################
+##Writes
+
+#Feed Back Command
+setFDB {
+    out "FDB:%f";
+    in "#AK";
+}
+
+##Disable or Enable output
+setMOFFMON {
+    out "%{MOFF|MON}";
+    in "#AK";
+}
+
+##Reset Status
+setMRESET {
+    out "MRESET";
+    in "#AK";
+}
+
+
+#Set Output Current no ramp
+setMWI {
+    out "MWI:%0.3f";
+    in "#AK";
+}
+

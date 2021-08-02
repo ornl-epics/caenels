@@ -1,0 +1,58 @@
+################Gathering all Alarms for Alarm Handler
+
+record(calc, "$(PV)1") {
+  field(DESC, "All Alarms Anded")
+  field(INPA, "BL15:CAENELS1:Error CP MS")
+  field(INPB, "BL15:CAENELS2:Error CP MS")
+  field(INPC, "BL15:CAENELS5:Error CP MS")
+  field(INPD, "BL15:CAENELS6:Error CP MS")
+  field(INPE, "BL15:CAENELS7:Error CP MS")
+  field(INPE, "BL15:CAENELS8:Error CP MS")
+  field(INPF, "BL15:CAENELS9:Error CP MS")
+  field(INPG, "BL15:CAENELS11:Error CP MS")
+  field(INPH, "BL15:CAENELS12:Error CP MS")
+  field(CALC, "(A+B+C+D+E+F+G+H)>0?1:0")
+  field(HIHI, "1")
+  field(HHSV, "MAJOR")
+  info(archive, "Monitor, 00:00:01, VAL")
+}
+
+record(calc, "$(PV)2") {
+  field(DESC, "All Alarms Anded")
+  field(INPA, "BL15:CAENELS13:Error CP MS")
+  field(INPB, "BL15:CAENELS14:Error CP MS")
+  field(INPC, "BL15:CAENELS15:Error CP MS")
+  field(INPD, "BL15:CAENELS16:Error CP MS")
+  field(INPE, "BL15:CAENELS17:Error CP MS")
+  field(INPE, "BL15:CAENELS18:Error CP MS")
+  field(INPF, "BL15:CAENELS19:Error CP MS")
+  field(INPG, "BL15:CAENELS23:Error CP MS")
+  field(INPH, "BL15:CAENELS25:Error CP MS")
+  field(CALC, "(A+B+C+D+E+F+G+H)>0?1:0")
+  field(HIHI, "1") 
+  field(HHSV, "MAJOR")
+  info(archive, "Monitor, 00:00:01, VAL")
+}
+
+
+
+record(calc, "$(PV)SUM") {
+  field(DESC, "All Alarms Anded")
+  field(INPA, "$(PV)1 CP NMS")
+  field(INPB, "$(PV)2 CP NMS")
+  field(CALC, "(A>0)|(B>0)?1:0")
+  field(HIHI, "1")
+  field(HHSV, "MAJOR")
+  info(archive, "Monitor, 00:00:01, VAL")
+}
+
+
+record(bi, "$(PV)BI"){
+  field(DESC, "Alarm for Alarm Handler")
+  field(INP, "$(PV)SUM CP MS")
+  field(ONAM, "Alarm")
+  field(ZNAM, "OK")
+}
+
+
+

@@ -1,0 +1,39 @@
+file CAENELS0520.template  
+{
+pattern {S PORT}
+        {BL15:CAENELS1 caenels1}
+        {BL15:CAENELS2 caenels2}
+
+
+
+        {BL15:CAENELS5 caenels5}
+        {BL15:CAENELS6 caenels6}
+        {BL15:CAENELS7 caenels7}
+        {BL15:CAENELS8 caenels8}
+        {BL15:CAENELS9 caenels9}
+
+        {BL15:CAENELS11 caenels11}
+        {BL15:CAENELS12 caenels12}
+        {BL15:CAENELS13 caenels13}
+        {BL15:CAENELS14 caenels14}
+        {BL15:CAENELS15 caenels15}
+        {BL15:CAENELS16 caenels16}
+        {BL15:CAENELS17 caenels17}
+        {BL15:CAENELS18 caenels18}
+        {BL15:CAENELS19 caenels19}
+
+
+
+        {BL15:CAENELS23 caenels23}
+        {BL15:CAENELS25 caenels25}
+
+}
+
+
+file ALLAlarms.db
+{
+pattern {PV}
+        {BL15:CAENELS:Alarms}
+
+}
+

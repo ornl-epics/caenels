@@ -1,0 +1,292 @@
+#CAENels Easy Driver 
+#Mariano Ruiz Jan 22 2021
+################################
+#ENable polling TCPIP
+#################################
+record(bo, "$(S):DisableCOM")
+{
+    field(DESC, "Enable COMS")
+    field(PINI, "YES")
+    field(VAL, "0")
+    field(ZNAM, "COM Enabled")
+    field(ONAM, "COM Disabled")
+    info(archive, "Monitor, 00:00:01, VAL")
+    info(autosaveFields, "VAL")
+}
+                                                                                              
+#################################
+#Sync COMS
+#################################
+record(seq, "$(S):COMSeq") {
+  field(DESC, "Com Sequence")
+  field(PINI, "YES")
+  field(SDIS, "$(S):DisableCOM")
+  field(SCAN, "5 second")
+  field(DOL1, "0.3")
+  field(DLY1, "1")
+#  field(LNK1, "$(S):RMWI.PROC")  ##This record is disable because it turns the current to 0 when asked
+  field(DOL2, "1")
+  field(DLY2, "0.3")
+#  field(LNK2, "$(S):RLOOP.PROC")
+  field(DOL3, "1")
+  field(DLY3, "0.3")
+#feedback removed
+  field(DOL4, "1")
+  field(DLY4, "0.3")
+  field(LNK4, "$(S):MRG.PROC")
+  field(DOL5, "1")
+  field(DLY5, "0.3")
+  field(LNK5, "$(S):MRI.PROC")
+  field(DOL6, "1")
+  field(DLY6, "0.3")
+  field(LNK6, "$(S):MRID.PROC")
+  field(DOL7, "1")
+  field(DLY7, "0.3")
+  field(LNK7, "$(S):MRP.PROC")
+  field(FLNK, "$(S):COMSeq2")
+}
+record(seq, "$(S):COMSeq2") {
+  field(DESC, "Com Sequence")
+  field(DOL1, "0.3")
+  field(DLY1, "1")
+  field(LNK1, "$(S):MRSR.PROC")
+  field(DOL2, "1")
+  field(DLY2, "0.3")
+  field(LNK2, "$(S):MRT.PROC")
+  field(DOL3, "1")
+  field(DLY3, "0.3")
+  field(LNK3, "$(S):MRTS.PROC")
+  field(DOL4, "1")
+  field(DLY4, "0.3")
+  field(LNK4, "$(S):MRV.PROC")
+  field(DOL5, "1")
+  field(DLY5, "0.3")
+  field(LNK5, "$(S):MST.PROC")
+  field(DOL6, "1")
+  field(DLY6, "0.3")
+  field(LNK6, "$(S):MVER.PROC")
+  field(DOL7, "1")
+  field(DLY7, "0.3")
+  field(LNK7, "$(S):MRW.PROC")
+}
+
+########Reads####################
+#######Get Current SP
+record(ai, "$(S):RMWI")
+{
+    field(DESC, "Read Output Current Value no ramp")
+    field(DTYP, "stream")
+    field(EGU,  "A")
+    field(INP,  "@caenels.proto getMWI $(PORT)")
+    field(PREC, "5")
+    info(archive, "Monitor, 00:00:01, VAL")
+}
+
+
+#######Get EEPROM cell Value
+record (longout, "$(S):MRG"){
+	field(DESC, "Read EEPROM cell")
+	field(DTYP, "stream")
+	field(OUT, "@caenels.proto setMRG $(PORT)")
+       
+}
+
+#######Get Current
+record (ai, "$(S):MRI"){
+        field(DESC, "Read Output Current")
+        field(DTYP, "stream")
+        field(INP, "@caenels.proto getMRI $(PORT)")
+        field(EGU, "A")
+        field(PREC, "5")
+        info(archive, "Monitor, 00:00:01, VAL")
+}
+
+#######Get Module ID
+record (stringin, "$(S):MRID"){
+        field(DESC, "Read Module ID")
+        field(DTYP, "stream")
+        field(INP, "@caenels.proto getMRID $(PORT)")
+}
+
+#######DC Link Voltage          
+record (ai, "$(S):MRP"){
+        field(DESC, "Read DC Link V")
+        field(DTYP, "stream")
+        field(INP, "@caenels.proto getMRP $(PORT)")
+        field(EGU, "V")
+        field(PREC, "5")
+        info(archive, "Monitor, 00:00:01, VAL")
+
+}
+
+
+#######Read Current Slew Rate Ramping          
+record (ai, "$(S):MRSR"){
+        field(DESC, "Read I Slew Rate")
+        field(DTYP, "stream")
+        field(INP, "@caenels.proto getMRP $(PORT)")
+        field(EGU, "A/S")
+        info(archive, "Monitor, 00:00:01, VAL")
+
+}
+
+#######Read Heat Sink Temp C          
+record (ai, "$(S):MRT"){
+        field(DESC, "Read Heat Sink Temp")
+        field(DTYP, "stream")
+        field(INP, "@caenels.proto getMRT $(PORT)")
+        field(EGU, "C")
+        field(PREC, "5")
+        info(archive, "Monitor, 00:00:01, VAL")
+
+}
+
+
+#######Read Reg Shunt Temp C          
+record (ai, "$(S):MRTS"){
+        field(DESC, "Read Shunt Reg Temp")
+        field(DTYP, "stream")
+        field(INP, "@caenels.proto getMRTS $(PORT)")
+        field(EGU, "C")
+        field(PREC, "5")
+        info(archive, "Monitor, 00:00:01, VAL")
+
+}
+
+#######Read Output Voltage           
+record (ai, "$(S):MRV"){
+        field(DESC, "Read Volt Output")
+        field(DTYP, "stream")
+        field(INP, "@caenels.proto getMRV $(PORT)")
+        field(EGU, "V")
+        field(PREC, "5")
+        info(archive, "Monitor, 00:00:01, VAL")
+
+}
+
+
+#######Read Status          
+record (longin, "$(S):MST"){
+        field(DESC, "Status Register")
+        field(DTYP, "stream")
+        field(INP, "@caenels.proto getMST $(PORT)")
+        field(EGU, "")
+        info(archive, "Monitor, 00:00:01, VAL")
+
+}
+
+record(mbbiDirect, "$(S):STATUS")
+{
+   	field(DESC, "Status Register")
+   	info(archive, "Monitor, 00:00:01, VAL")
+        field(INP, "$(S):MST CPP")
+   	field(NOBT, "8")
+
+}
+
+record (bi, "$(S):ModuleON"){
+        field(DESC, "PS Output ON")
+        field(INP, "$(S):STATUS.B0 CPP")
+	field(ZNAM, "PS OFF")
+	field(ONAM, "PS ON")
+        info(archive, "Monitor, 00:00:01, VAL")
+
+}
+
+record (bi, "$(S):Error"){
+        field(DESC, "Get Error")
+        field(INP, "$(S):STATUS.B1 CPP")
+        field(ZNAM, "OK")
+        field(ONAM, "ERROR")
+        info(archive, "Monitor, 00:00:01, VAL")
+
+}
+
+record (bi, "$(S):ErrorDC"){
+        field(DESC, "DC UnderV Status")
+        field(INP, "$(S):STATUS.B2 CPP")
+        field(ZNAM, "OK")
+        field(ONAM, "DC UnderV")
+        info(archive, "Monitor, 00:00:01, VAL")
+
+}
+
+record (bi, "$(S):ErrorMosfet"){
+        field(DESC, "Mosfer Temp Status")
+        field(INP, "$(S):STATUS.B3 CPP")
+        field(ZNAM, "OK")
+        field(ONAM, "ErrorMosfet")
+        info(archive, "Monitor, 00:00:01, VAL")
+
+}
+record (bi, "$(S):ErrorShunt"){
+        field(DESC, "Shunt Temp Error")
+        field(INP, "$(S):STATUS.B4 CPP")
+        field(ZNAM, "OK")
+        field(ONAM, "ErrorShunt")
+        info(archive, "Monitor, 00:00:01, VAL")
+
+}
+
+record (bi, "$(S):ErrorInterlock"){
+        field(DESC, "DC UnderV Status")
+        field(INP, "$(S):STATUS.B5 CPP")
+        field(ZNAM, "OK")
+        field(ONAM, "ErrorInterlock")
+        info(archive, "Monitor, 00:00:01, VAL")
+
+}
+
+#######Read Module Version          
+record (stringin, "$(S):MVER"){
+        field(DESC, "Read Module Version")
+        field(DTYP, "stream")
+        field(INP, "@caenels.proto getMVER $(PORT)")
+        
+}
+
+#######Read Output Power
+record (ai, "$(S):MRW"){
+        field(DESC, "Read Output Power")
+        field(DTYP, "stream")
+        field(INP, "@caenels.proto getMRW $(PORT)")
+        field(EGU, "W")
+        field(PREC, "5")
+        info(archive, "Monitor, 00:00:01, VAL")
+
+}
+
+
+########Writes###################
+record(bo, "$(S):MOFFMON")
+{
+    field(DESC, "Turn supply on off")
+    field(DTYP, "stream")
+    field(OUT,  "@caenels.proto setMOFFMON $(PORT)")
+    field(ZNAM, "OFF")
+    field(ONAM, "ON")
+    info(archive, "Monitor, 00:00:01, VAL")
+    info(autosaveFields, "VAL")
+
+}
+
+record(bo, "$(S):MRESET")
+{
+    field(DESC, "Reset status register/clear faults")
+    field(DTYP, "stream")
+    field(OUT,  "@caenels.proto setMRESET $(PORT)")
+    field(HIGH, "1")
+}
+
+record(ao, "$(S):MWI")
+{
+    field(DESC, "Set Output Current Value no ramp")
+    field(DTYP, "stream")
+    field(EGU,  "A")
+    field(OUT,  "@caenels.proto setMWI $(PORT)")
+    field(PREC, "5")
+    info(archive, "Monitor, 00:00:01, VAL")
+    info(autosaveFields, "VAL")
+
+}
+
